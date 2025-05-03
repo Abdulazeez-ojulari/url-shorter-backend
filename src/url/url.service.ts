@@ -9,7 +9,7 @@ export class UrlService {
             const shortCode = nanoid(6);
             await Url.create({ longUrl: longUrl, shortCode: shortCode });
 
-            const shortUrl = `http://localhost:3000/${shortCode}`;
+            const shortUrl = `${process.env.SHORTER_BASE_URL}/${shortCode}`;
 
                 
             return {
@@ -61,7 +61,7 @@ export class UrlService {
                 statusCode: 200,
                 msg: urlMessages.FETCH_SUCCESS,
                 data: {
-                    shortUrl: `http://localhost:3000/${url.shortCode}`,
+                    shortUrl: `${process.env.SHORTER_BASE_URL}/${url.shortCode}`,
                     longUrl: url.longUrl,
                     createdAt: url.createdAt,
                     visits: url.visits,
