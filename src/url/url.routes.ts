@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import { body } from "express-validator";
-import { encodeUrl } from "./url.controller";
+import { decodeUrl, encodeUrl } from "./url.controller";
 
 router.post(
   "/encode",
@@ -9,6 +9,14 @@ router.post(
     body("longUrl", "enter long url").trim().notEmpty(),
   ],
   encodeUrl
+);
+
+router.post(
+    "/decode",
+    [
+      body("shortCode", "enter short code").trim().notEmpty(),
+    ],
+    decodeUrl
 );
 
 export { router as urlRouter };
