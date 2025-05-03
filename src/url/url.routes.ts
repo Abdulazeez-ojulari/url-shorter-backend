@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
-import { body } from "express-validator";
-import { decodeUrl, encodeUrl } from "./url.controller";
+import { body, param } from "express-validator";
+import { decodeUrl, encodeUrl, urlStatistic } from "./url.controller";
 
 router.post(
   "/encode",
@@ -17,6 +17,14 @@ router.post(
       body("shortCode", "enter short code").trim().notEmpty(),
     ],
     decodeUrl
+);
+
+router.get(
+    "/statistic/:url_path",
+    [
+      param("url_path", "invalid short code").trim().isLength({min: 6, max: 6}),
+    ],
+    urlStatistic
 );
 
 export { router as urlRouter };

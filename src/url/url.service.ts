@@ -40,6 +40,33 @@ export class UrlService {
                 msg: urlMessages.FETCH_SUCCESS,
                 data: { longUrl: url.longUrl },
             }
+
+        } catch (error) {
+            console.log("error", error)
+            return { statusCode: 500, success: false, msg: "Server error" }
+        }
+    }
+
+    async urlStatistic(shortCode: string) {
+        try {
+
+            const url = await Url.findOne({ shortCode });
+
+            if (!url) {
+                return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
+            }
+                           
+            return {
+                success: true,
+                statusCode: 200,
+                msg: urlMessages.FETCH_SUCCESS,
+                data: {
+                    shortUrl: `http://localhost:3000/${url.shortCode}`,
+                    longUrl: url.longUrl,
+                    createdAt: url.createdAt,
+                    visits: url.visits,
+                },
+            }
             
         } catch (error) {
             console.log("error", error)
