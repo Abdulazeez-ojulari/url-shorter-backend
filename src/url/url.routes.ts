@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import { body, param } from "express-validator";
-import { decodeUrl, encodeUrl, urlList, urlStatistic } from "./url.controller";
+import { decodeUrl, encodeUrl, redirect, urlList, urlStatistic } from "./url.controller";
 
 router.post(
   "/encode",
@@ -30,6 +30,11 @@ router.get(
 router.get(
     "/list",
     urlList
+);
+
+router.get(
+    "/:url_path",
+    redirect
 );
 
 export { router as urlRouter };

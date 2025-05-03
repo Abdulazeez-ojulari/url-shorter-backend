@@ -95,4 +95,30 @@ export class UrlService {
             return { statusCode: 500, success: false, msg: "Server error" }
         }
     }
+
+    async redirect(shortCode: string){
+        try {
+
+            const url = await Url.findOne({ shortCode });
+
+            if (!url) {
+                return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
+            }
+          
+            url.visits += 1;
+            await url.save();
+                                     
+            return {
+                success: true,
+                statusCode: 200,
+                msg: urlMessages.FETCH_SUCCESS,
+                data: {url: url.longUrl},
+            }
+            
+        } catch (error) {
+            console.log("error", error)
+            return { statusCode: 500, success: false, msg: "Server error" }
+        }
+     
+    }
 }

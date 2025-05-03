@@ -157,3 +157,48 @@ export const urlList = errorMiddleware(
         }
     }
 );
+
+export const redirect = errorMiddleware(
+    async (req: Request, res: Response) => {
+        const { url_path } = req.params;
+
+        const urlService = new UrlService();
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+            responseCode: "400",
+            responseMessage: "Bad request",
+            data: errors.array(),
+            });
+        }
+    
+        try {
+            const user = await urlService.redirect(url_path);
+    
+            if (!user.success) {
+                return res.status(user.statusCode).json({
+                    responseCode: user.statusCode,
+                    responseMessage: "Error",
+                    message: user.msg,
+                });
+            }
+
+            if (!user.data) {
+                return res.status(user.statusCode).json({
+                    responseCode: 500,
+                    responseMessage: "Error",
+                    message: "something failed",
+                });
+            }
+
+            return res.redirect(user.data.url);
+
+        } catch (error) {
+            return res.status(500).json({
+                responseCode: "500",
+                responseMessage: "Error",
+                message: error,
+            });
+        }
+    }
+);
