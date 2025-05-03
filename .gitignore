@@ -1,0 +1,10 @@
+.env
+app.js
+/node_modules
+node_modules/*
+/dist
+dist.zip
+/build
+npm-debug.log
+.DS_Store
+/*.env
