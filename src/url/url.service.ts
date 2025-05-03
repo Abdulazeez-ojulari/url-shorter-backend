@@ -73,4 +73,26 @@ export class UrlService {
             return { statusCode: 500, success: false, msg: "Server error" }
         }
     }
+
+    async urlList() {
+        try {
+
+            const urls = await Url.find().sort({ createdAt: -1 });
+
+            if (!urls) {
+                return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
+            }
+                           
+            return {
+                success: true,
+                statusCode: 200,
+                msg: urlMessages.FETCH_SUCCESS,
+                data: {urls},
+            }
+            
+        } catch (error) {
+            console.log("error", error)
+            return { statusCode: 500, success: false, msg: "Server error" }
+        }
+    }
 }

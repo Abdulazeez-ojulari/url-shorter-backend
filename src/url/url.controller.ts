@@ -125,3 +125,35 @@ export const urlStatistic = errorMiddleware(
         }
     }
 );
+
+export const urlList = errorMiddleware(
+    async (req: Request, res: Response) => {
+
+        const urlService = new UrlService();
+    
+        try {
+            const user = await urlService.urlList();
+    
+            if (!user.success) {
+                return res.status(user.statusCode).json({
+                    responseCode: user.statusCode,
+                    responseMessage: "Error",
+                    message: user.msg,
+                });
+            }
+    
+            return res.status(200).json({
+                responseCode: user.statusCode,
+                responseMessage: user.msg,
+                data: user.data,
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                responseCode: "500",
+                responseMessage: "Error",
+                message: error,
+            });
+        }
+    }
+);
