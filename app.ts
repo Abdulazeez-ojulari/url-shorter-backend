@@ -10,6 +10,8 @@ const app = express();
 
 app.use(cors());
 
+app.set('trust proxy', true)
+
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: true }));
 app.use(cookieParser());

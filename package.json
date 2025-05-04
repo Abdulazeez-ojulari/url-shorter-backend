@@ -19,12 +19,14 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",
+    "geoip-country": "^5.0.202505022342",
     "mongoose": "^8.14.1",
     "nanoid": "^5.1.5",
     "path": "^0.12.7",
     "prettier": "^3.3.3",
     "shortid": "^2.2.17",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "ua-parser-js": "^2.0.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",

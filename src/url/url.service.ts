@@ -1,14 +1,22 @@
 import { nanoid } from "nanoid";
 import Url from "./url.model";
 import { urlMessages } from "./url.helper";
+import { StatisticService } from "../statistic/statistic.service";
 
-export class UrlService {
+export class UrlService extends StatisticService {
     async encodeUrl(longUrl: string) {
         try {
 
             const shortCode = nanoid(6);
-            await Url.create({ longUrl: longUrl, shortCode: shortCode });
+            
+            const statsRes = await this.createStats()
 
+            if (!statsRes.success && !statsRes.data) {
+                return { statusCode: statsRes.statusCode , success: false, msg: statsRes.msg };
+            }
+
+            await Url.create({ longUrl: longUrl, shortCode: shortCode, stats: statsRes.data?.id});
+            
             const shortUrl = `${process.env.SHORTER_BASE_URL}/${shortCode}`;
 
                 
@@ -50,11 +58,13 @@ export class UrlService {
     async urlStatistic(shortCode: string) {
         try {
 
-            const url = await Url.findOne({ shortCode });
+            const url = await Url.findOne({ shortCode }).populate("stats").exec();
 
             if (!url) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
             }
+
+            // const stats = await this.getStatsById(url.statistic);
                            
             return {
                 success: true,
@@ -64,7 +74,7 @@ export class UrlService {
                     shortUrl: `${process.env.SHORTER_BASE_URL}/${url.shortCode}`,
                     longUrl: url.longUrl,
                     createdAt: url.createdAt,
-                    visits: url.visits,
+                    statistic: url.stats,
                 },
             }
             
@@ -96,7 +106,7 @@ export class UrlService {
         }
     }
 
-    async redirect(shortCode: string){
+    async redirect(shortCode: string, ip: any, userAgent: any){
         try {
 
             const url = await Url.findOne({ shortCode });
@@ -104,9 +114,16 @@ export class UrlService {
             if (!url) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
             }
-          
-            url.visits += 1;
-            await url.save();
+
+            let stats = await this.getStatsById(url.stats);
+
+            if(!stats.success && !stats.data){
+                stats = await this.createStats()
+                url.stats = stats.data?.id 
+                await url.save();
+            }
+
+            await this.updateStats(stats.data?.id, ip, userAgent);
                                      
             return {
                 success: true,

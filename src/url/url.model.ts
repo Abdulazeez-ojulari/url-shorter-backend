@@ -12,16 +12,16 @@ const UrlSchema: Schema<UrlDocument> = new Schema(
         type: String,
         required: true,
     },
-    visits: {
-        type: Number,
-        required: false,
-        default: 0,
-    },
     status: {
         type: String,
         enum: ['Active',  'Inactive'],
         default: 'Active',
         required: false,
+    },
+    stats: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Statistic',
+        required: true,
     },
   },
   {
@@ -29,6 +29,12 @@ const UrlSchema: Schema<UrlDocument> = new Schema(
     collection: 'url',
   }
 );
+
+UrlSchema.virtual('statistic', {
+    ref: 'Statistic',
+    localField: '_id',
+    foreignField: 'urlId',
+});
 
 const Url: Model<UrlDocument> = mongoose.model<UrlDocument>('Url', UrlSchema);
 

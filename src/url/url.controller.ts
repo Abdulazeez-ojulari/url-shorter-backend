@@ -173,7 +173,10 @@ export const redirect = errorMiddleware(
         }
     
         try {
-            const user = await urlService.redirect(url_path);
+            const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+            const userAgent = req.headers["user-agent"] || "Unknown";
+
+            const user = await urlService.redirect(url_path, ip, userAgent);
     
             if (!user.success) {
                 return res.status(user.statusCode).json({
