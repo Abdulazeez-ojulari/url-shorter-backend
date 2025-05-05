@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-module.exports = function () {
+const dbCon  = function () {
   const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -24,3 +24,5 @@ module.exports = function () {
 
   connectWithRetry();
 };
+
+export default dbCon

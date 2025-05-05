@@ -27,8 +27,13 @@ export class UrlService extends StatisticService {
             data: { shortUrl, shortCode, longUrl },
             }
         } catch (error) {
-            console.log("error", error)
-            return { statusCode: 500, success: false, msg: "Server error" }
+            let message: string;
+            if (error instanceof Error) {
+              message = error.message;
+            } else {
+              message = String(error);
+            }
+            return { statusCode: 500, success: false, msg: message }
         }
     }
 
@@ -50,8 +55,13 @@ export class UrlService extends StatisticService {
             }
 
         } catch (error) {
-            console.log("error", error)
-            return { statusCode: 500, success: false, msg: "Server error" }
+            let message: string;
+            if (error instanceof Error) {
+              message = error.message;
+            } else {
+              message = String(error);
+            }
+            return { statusCode: 500, success: false, msg: message }
         }
     }
 
@@ -79,8 +89,13 @@ export class UrlService extends StatisticService {
             }
             
         } catch (error) {
-            console.log("error", error)
-            return { statusCode: 500, success: false, msg: "Server error" }
+            let message: string;
+            if (error instanceof Error) {
+              message = error.message;
+            } else {
+              message = String(error);
+            }
+            return { statusCode: 500, success: false, msg: message }
         }
     }
 
@@ -101,8 +116,13 @@ export class UrlService extends StatisticService {
             }
             
         } catch (error) {
-            console.log("error", error)
-            return { statusCode: 500, success: false, msg: "Server error" }
+            let message: string;
+            if (error instanceof Error) {
+              message = error.message;
+            } else {
+              message = String(error);
+            }
+            return { statusCode: 500, success: false, msg: message }
         }
     }
 
@@ -133,8 +153,13 @@ export class UrlService extends StatisticService {
             }
             
         } catch (error) {
-            console.log("error", error)
-            return { statusCode: 500, success: false, msg: "Server error" }
+            let message: string;
+            if (error instanceof Error) {
+              message = error.message;
+            } else {
+              message = String(error);
+            }
+            return { statusCode: 500, success: false, msg: message }
         }
      
     }

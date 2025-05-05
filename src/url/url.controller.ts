@@ -28,13 +28,20 @@ export const encodeUrl = errorMiddleware(
                 });
             }
     
-            return res.status(200).json({
+            return res.status(user.statusCode).json({
                 responseCode: user.statusCode,
                 responseMessage: user.msg,
                 data: user.data,
             });
 
         } catch (error) {
+            let message: string;
+            if (error instanceof Error) {
+              message = error.message;
+            } else {
+              message = String(error);
+            }
+
             return res.status(500).json({
                 responseCode: "500",
                 responseMessage: "Error",
@@ -69,7 +76,7 @@ export const decodeUrl = errorMiddleware(
                 });
             }
     
-            return res.status(200).json({
+            return res.status(user.statusCode).json({
                 responseCode: user.statusCode,
                 responseMessage: user.msg,
                 data: user.data,
@@ -110,7 +117,7 @@ export const urlStatistic = errorMiddleware(
                 });
             }
     
-            return res.status(200).json({
+            return res.status(user.statusCode).json({
                 responseCode: user.statusCode,
                 responseMessage: user.msg,
                 data: user.data,
@@ -142,7 +149,7 @@ export const urlList = errorMiddleware(
                 });
             }
     
-            return res.status(200).json({
+            return res.status(user.statusCode).json({
                 responseCode: user.statusCode,
                 responseMessage: user.msg,
                 data: user.data,
