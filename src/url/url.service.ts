@@ -39,7 +39,7 @@ export class UrlService extends StatisticService {
     async decodeUrl(shortCode: string) {
         try {
 
-            const url = await Url.findOne({ shortCode }).select("id longUrl");
+            const url = await Url.findOne({ shortCode }).select("id longUrl shortUrl");
 
             if (!url) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
@@ -50,7 +50,7 @@ export class UrlService extends StatisticService {
                 success: true,
                 statusCode: 200,
                 msg: urlMessages.FETCH_SUCCESS,
-                data: { longUrl: url.longUrl },
+                data: { longUrl: url.longUrl, shortUrl: url.shortUrl },
             }
 
         } catch (error) {

@@ -18,8 +18,8 @@ A modern, developer-friendly URL shortening service built with Node.js, TypeScri
 
 ### 1. Clone the Repository
 
-git clone https://github.com/yourusername/shortlink.git
-cd shortlink
+git clone https://github.com/Abdulazeez-ojulari/url-shorter-backend.git
+cd url-shorter-backend
 
 ### 2. Install Dependencies
 
