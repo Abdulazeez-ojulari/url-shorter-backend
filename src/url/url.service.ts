@@ -15,11 +15,10 @@ export class UrlService extends StatisticService {
                 return { statusCode: statsRes.statusCode , success: false, msg: statsRes.msg };
             }
 
-            await Url.create({ longUrl: longUrl, shortCode: shortCode, stats: statsRes.data?.id});
-            
             const shortUrl = `${process.env.SHORTER_BASE_URL}/${shortCode}`;
 
-                
+            await Url.create({ longUrl: longUrl, shortCode: shortCode, shortUrl: shortUrl, stats: statsRes.data?.id});
+            
             return {
             success: true,
             statusCode: 201,
@@ -40,7 +39,7 @@ export class UrlService extends StatisticService {
     async decodeUrl(shortCode: string) {
         try {
 
-            const url = await Url.findOne({ shortCode });
+            const url = await Url.findOne({ shortCode }).select("id longUrl");
 
             if (!url) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
@@ -73,8 +72,6 @@ export class UrlService extends StatisticService {
             if (!url) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
             }
-
-            // const stats = await this.getStatsById(url.statistic);
                            
             return {
                 success: true,
@@ -82,6 +79,7 @@ export class UrlService extends StatisticService {
                 msg: urlMessages.FETCH_SUCCESS,
                 data: {
                     shortUrl: `${process.env.SHORTER_BASE_URL}/${url.shortCode}`,
+                    shortCode: url.shortCode,
                     longUrl: url.longUrl,
                     createdAt: url.createdAt,
                     statistic: url.stats,
@@ -102,7 +100,7 @@ export class UrlService extends StatisticService {
     async urlList() {
         try {
 
-            const urls = await Url.find().sort({ createdAt: -1 });
+            const urls = await Url.find().sort({ createdAt: -1 }).select("id shortCode longUrl shortUrl status");
 
             if (!urls) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
@@ -129,7 +127,7 @@ export class UrlService extends StatisticService {
     async redirect(shortCode: string, ip: any, userAgent: any){
         try {
 
-            const url = await Url.findOne({ shortCode });
+            const url = await Url.findOne({ shortCode }).select("id stats longUrl");
 
             if (!url) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };

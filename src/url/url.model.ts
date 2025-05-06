@@ -12,6 +12,10 @@ const UrlSchema: Schema<UrlDocument> = new Schema(
         type: String,
         required: true,
     },
+    shortUrl: {
+      type: String,
+      required: true,
+    },
     status: {
         type: String,
         enum: ['Active',  'Inactive'],

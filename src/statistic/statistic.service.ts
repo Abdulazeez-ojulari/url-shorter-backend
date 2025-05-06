@@ -8,7 +8,7 @@ export class StatisticService {
     async getStatsById(id: any){
         try {
 
-            const statistic = await Statistic.findById(id);
+            const statistic = await Statistic.findById(id).select("id");
 
             if (!statistic) {
                 return { statusCode: 404, success: false, msg: statisticMessages.FETCH_ERROR };
