@@ -33,7 +33,25 @@ describe("URL Shortening Service", () => {
   it("should return 400 for invalid encode requests", async () => {
     const res = await request(app).post("/api/encode").send({ url: "" });
     expect(res.status).toBe(400);
-    // expect(res.body).toHaveProperty("error");
+  });
+
+  it("should decode a short code and return a long url", async () => {
+
+    const response = await request(app)
+      .post("/api/decode")
+      .send({ shortCode: shortCode });
+
+    expect(response.status).toBe(200);
+    console.log(shortCode)
+    const longUrl = response.body.data.longUrl;
+    expect(typeof longUrl).toBe("string");
+    expect(longUrl.length).toBeGreaterThan(0);
+    expect(response.body.data.longUrl).toBe(originalUrl);
+  });
+
+  it("should return 400 for invalid decode requests", async () => {
+    const res = await request(app).post("/api/decode").send({ shortCode: "" });
+    expect(res.status).toBe(400);
   });
 
   it("should decode and redirect to the original URL", async () => {

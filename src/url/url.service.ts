@@ -100,7 +100,8 @@ export class UrlService extends StatisticService {
     async urlList() {
         try {
 
-            const urls = await Url.find().sort({ createdAt: -1 }).select("id shortCode longUrl shortUrl status");
+            // would have refactored this and add paggination 
+            const urls = await Url.find().sort({ createdAt: -1 }).select("id shortCode longUrl shortUrl status createdAt").populate("stats", "totalClicks");
 
             if (!urls) {
                 return { statusCode: 404, success: false, msg: urlMessages.FETCH_ERROR };
